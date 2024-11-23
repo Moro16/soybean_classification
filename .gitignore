@@ -1,2 +1,4 @@
 raw_data/
 alessandro_notebook
+*.pyc
+__pycache__/
