@@ -231,9 +231,6 @@ nest-asyncio==1.6.0
 notebook==7.2.2
 notebook_shim==0.2.4
 numpy==1.26.4
-nvidia-cublas-cu12==12.6.3.3
-nvidia-cuda-runtime-cu12==12.6.77
-nvidia-cudnn-cu12==9.5.1.17
 oauthlib==3.2.2
 opt_einsum==3.4.0
 optree==0.13.1
@@ -284,13 +281,11 @@ stack-data==0.6.3
 tensorboard==2.10.1
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
-tensorflow==2.15.1
+tensorflow[and-cuda]==2.15.0
 tensorflow-cpu==2.10.0
 tensorflow-directml-plugin==0.4.0.dev230202
 tensorflow-estimator==2.10.0
 tensorflow-io-gcs-filesystem==0.37.1
-tensorrt-bindings==8.6.1
-tensorrt-libs==8.6.1
 termcolor==2.5.0
 terminado==0.18.1
 threadpoolctl==3.5.0
