@@ -16,3 +16,7 @@ class SoybeanPrediciton:
        classe_lista = ['Broken soybeans', 'Immature soybeans', 'Intact soybeans',
                        'Skin-damaged soybeans', 'Spotted soybeans']
        return classe_lista[numero_classe]
+
+
+def teste(teste):
+    return print(teste)
