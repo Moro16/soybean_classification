@@ -1,9 +1,27 @@
 from fastapi import FastAPI
 from fastapi import FastAPI, File, UploadFile
+
+from typing import Union
+
+import uuid
+
 from ..arquivos_py.load_model import load_model
 from ..arquivos_py.preprocess import img_to_array
 
 app = FastAPI()
+
+IMAGEDIR = "raw_data/"
+
+@app.get("/upload")
+async def create_upload_file(file: UploadFile = File(...)):
+
+    file.filename = f"{uuid.uuid4()}.jpg"
+    contents = await file.read()
+
+    with open (f"{IMAGEDIR}/{file.filename}", "wb") as f:
+        f.write(contents)
+
+    return {"filename"}/{file.filename}
 
 @app.get("/predict")
 def predict(path):
