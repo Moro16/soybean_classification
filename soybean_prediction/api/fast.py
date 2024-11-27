@@ -1,50 +1,53 @@
 from fastapi import FastAPI
 from fastapi import FastAPI, File, UploadFile
+from ..arquivos_py.soybean_predictor import SoybeanPrediciton
+import tensorflow as tf
 
+
+import streamlit as st
 from typing import Union
-
 import uuid
+from PIL import Image
+# Open the image form working directory
 
-from ..arquivos_py.load_model import load_model
+
+import numpy as np
+import cv2
+
+from ..arquivos_py.load_model import load_model_sb
 from ..arquivos_py.preprocess import img_to_array
 
 app = FastAPI()
+app.state.model = load_model_sb()
 
 IMAGEDIR = "raw_data/"
 
-@app.get("/upload")
-async def create_upload_file(file: UploadFile = File(...)):
+@app.post('/upload_image')
+async def receive_image(img: UploadFile=File(...)):
 
-    file.filename = f"{uuid.uuid4()}.jpg"
-    contents = await file.read()
+    contents = await img.read()
 
-    with open (f"{IMAGEDIR}/{file.filename}", "wb") as f:
-        f.write(contents)
+    nparr = np.fromstring(contents, np.uint8)
+    cv2_img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    cv2.imwrite("result.jpg", cv2_img)
 
-    return {"filename"}/{file.filename}
+    cv2_img = Image.open('result.jpg')
 
-@app.get("/predict")
-def predict(path):
+    cv2_img = tf.image.resize(cv2_img, [128, 128])
 
-    model = load_model()
-    array = img_to_array(path)
+    cv2_img = np.expand_dims(cv2_img, axis=0)
 
-    pred = model.predict(array)
-
-    index_class = list(pred[0]).index(pred.max())
-    list_class = ['Broken soybeans',
-                  'Immature soybeans',
-                  'Intact soybeans',
-                  'Skin-damaged soybeans',
-                  'Spotted soybeans']
-
-    class_pred = list_class[index_class]
-    porcent_pred = round(pred.max()*100, 2)
-
+    result = app.state.model.predict(cv2_img)
+    print(cv2_img.shape)
+    print(result)
+    numero_classe = list(result[0]).index(result.max())
+    classe_lista = ['Broken soybeans', 'Immature soybeans', 'Intact soybeans',
+                    'Skin-damaged soybeans', 'Spotted soybeans']
+    porcent_pred = round(result.max()*100, 2)
     return {
-        'class': class_pred,
+        'classe': classe_lista[numero_classe],
         'porcent': porcent_pred
-            }
+    }
 
 
 @app.get("/")
