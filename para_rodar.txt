@@ -1,0 +1,5 @@
+uvicorn, na pasta soybean_classification
+    uvicorn soybean_prediction.api.fast:app --reload
+
+streamlit, na pasta pai
+    streamlit run app.py
