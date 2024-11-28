@@ -45,8 +45,8 @@ async def receive_image(img: UploadFile=File(...)):
                     'Skin-damaged soybeans', 'Spotted soybeans']
     porcent_pred = round(result.max()*100, 2)
     return {
-        'classe': classe_lista[numero_classe],
-        'porcent': porcent_pred
+        'class': classe_lista[numero_classe],
+        'accuracy': porcent_pred
     }
 
 

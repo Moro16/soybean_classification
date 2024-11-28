@@ -1,7 +1,6 @@
 import streamlit as st
 from PIL import Image
 import requests
-from dotenv import load_dotenv
 import os
 
 # Set page tab display
@@ -15,9 +14,7 @@ st.set_page_config(
 # Example local Docker container URL
 # url = 'http://api:8000'
 # Example localhost development URL
-# url = 'http://localhost:8000'
-load_dotenv()
-url = os.getenv('API_URL')
+url = 'http://localhost:8000'
 
 
 # App title and description
@@ -36,7 +33,7 @@ st.markdown('''
 st.markdown("---")
 
 ### Create a native Streamlit file upload input
-st.markdown("### Let's do a simple face recognition 👇")
+st.markdown("### Let's do a simple soybean recognition 👇")
 img_file_buffer = st.file_uploader('Upload an image')
 
 if img_file_buffer is not None:
@@ -57,7 +54,7 @@ if img_file_buffer is not None:
 
       if res.status_code == 200:
         ### Display the image returned by the API
-        st.image(res.content, caption="Image returned from API ☝️")
+        st.write(res.json())
       else:
         st.markdown("**Oops**, something went wrong 😓 Please try again.")
         print(res.status_code, res.content)
