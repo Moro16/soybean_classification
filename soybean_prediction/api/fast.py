@@ -41,8 +41,8 @@ async def receive_image(img: UploadFile=File(...)):
     print(cv2_img.shape)
     print(result)
     numero_classe = list(result[0]).index(result.max())
-    classe_lista = ['Broken soybeans', 'Immature soybeans', 'Intact soybeans',
-                    'Skin-damaged soybeans', 'Spotted soybeans']
+    classe_lista = ['Broken', 'Immature', 'Intact',
+                    'Skin-damaged', 'Spotted']
     porcent_pred = round(result.max()*100, 2)
     return {
         'class': classe_lista[numero_classe],
