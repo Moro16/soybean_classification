@@ -11,6 +11,10 @@ st.set_page_config(
    initial_sidebar_state="expanded",
 )
 
+# import style
+with open('style.css') as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
 # Example local Docker container URL
 # url = 'http://api:8000'
 # Example localhost development URL
@@ -18,43 +22,51 @@ url = 'http://localhost:8000'
 
 
 # App title and description
-st.header('Simple Image Uploader 📸')
+st.markdown('### 🌽🫘Soybean and corn quality analysis🫘🌽')
 st.markdown('''
-            > This is a Le Wagon boilerplate for any data science projects that involve exchanging images between a Python API and a simple web frontend.
+            > In our project, we developed deep learning models to help farmers detect low-quality soybeans and corn grains
 
-            > **What's here:**
-
-            > * [Streamlit](https://docs.streamlit.io/) on the frontend
-            > * [FastAPI](https://fastapi.tiangolo.com/) on the backend
-            > * [PIL/pillow](https://pillow.readthedocs.io/en/stable/) and [opencv-python](https://github.com/opencv/opencv-python) for working with images
-            > * Backend and frontend can be deployed with Docker
+            > * The models were created using convolutional neural networks
+            > * For soybeans, the model has an accuracy of xx.x%
+            > * For corn, the model has an accuracy of xx.x%
             ''')
 
 st.markdown("---")
 
 ### Create a native Streamlit file upload input
-st.markdown("### Let's do a simple soybean recognition 👇")
-img_file_buffer = st.file_uploader('Upload an image')
+col5, col6= st.columns(2)
 
-if img_file_buffer is not None:
+with col5:
+    st.markdown("### SOYBEAN recognition 🫘")
+    img_file_buffer_soy= st.file_uploader('Upload an image', key='soybean')
 
-  col1, col2 = st.columns(2)
+with col6:
+    st.markdown("### CORN recognition 🌽")
+    img_file_buffer_corn = st.file_uploader('Upload an image', key='corn')
 
-  with col1:
-    ### Display the image user uploaded
-    st.image(Image.open(img_file_buffer), caption="Here's the image you uploaded ☝️")
+if img_file_buffer_soy is not None:
+    col1, col2= st.columns(2)
 
-  with col2:
+    with col1:
+        ### Display the image user uploaded
+        st.markdown("### Here's the image you uploaded")
+        st.image(Image.open(img_file_buffer_soy))
+
     with st.spinner("Wait for it..."):
-      ### Get bytes from the file buffer
-      img_bytes = img_file_buffer.getvalue()
+        ### Get bytes from the file buffer
+        img_bytes = img_file_buffer_soy.getvalue()
 
-      ### Make request to  API (stream=True to stream response as bytes)
-      res = requests.post(url + "/upload_image", files={'img': img_bytes})
+        ### Make request to  API (stream=True to stream response as bytes)
+        res = requests.post(url + "/upload_image", files={'img': img_bytes})
 
-      if res.status_code == 200:
+
+    with col2:
+        if res.status_code == 200:
         ### Display the image returned by the API
-        st.write(res.json())
-      else:
-        st.markdown("**Oops**, something went wrong 😓 Please try again.")
-        print(res.status_code, res.content)
+            st.markdown("### Results")
+            st.metric("Class", res.json()['class'])
+            st.metric("Accuracy", res.json()['accuracy'])
+
+        else:
+            st.markdown("**Oops**, something went wrong 😓 Please try again.")
+            print(res.status_code, res.content)
