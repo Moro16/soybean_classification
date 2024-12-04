@@ -18,7 +18,7 @@ with open('style.css') as f:
 # Example local Docker container URL
 # url = 'http://api:8000'
 # Example localhost development URL
-url = 'http://localhost:8000'
+url = 'https://bean-prediction-image-3-479795464782.southamerica-east1.run.app'
 
 
 # App title and description
@@ -27,8 +27,8 @@ st.markdown('''
             > In our project, we developed deep learning models to help farmers detect low-quality soybeans and corn grains
 
             > * The models were created using convolutional neural networks
-            > * For soybeans, the model has an accuracy of xx.x%
-            > * For corn, the model has an accuracy of xx.x%
+            > * For soybeans, the model has an accuracy of 90.48%
+            > * For corn, the model has an accuracy of 69.85%
             ''')
 
 st.markdown("---")
@@ -57,10 +57,37 @@ if img_file_buffer_soy is not None:
         img_bytes = img_file_buffer_soy.getvalue()
 
         ### Make request to  API (stream=True to stream response as bytes)
-        res = requests.post(url + "/upload_image", files={'img': img_bytes})
+        res = requests.post(url + "/upload_image_sb", files={'img': img_bytes})
 
 
     with col2:
+        if res.status_code == 200:
+        ### Display the image returned by the API
+            st.markdown("### Results")
+            st.metric("Class", res.json()['class'])
+            st.metric("Accuracy", res.json()['accuracy'])
+
+        else:
+            st.markdown("**Oops**, something went wrong 😓 Please try again.")
+            print(res.status_code, res.content)
+
+if img_file_buffer_corn is not None:
+    col3, col4= st.columns(2)
+
+    with col3:
+        ### Display the image user uploaded
+        st.markdown("### Here's the image you uploaded")
+        st.image(Image.open(img_file_buffer_corn))
+
+    with st.spinner("Wait for it..."):
+        ### Get bytes from the file buffer
+        img_bytes = img_file_buffer_corn.getvalue()
+
+        ### Make request to  API (stream=True to stream response as bytes)
+        res = requests.post(url + "/upload_image_corn", files={'img': img_bytes})
+
+
+    with col4:
         if res.status_code == 200:
         ### Display the image returned by the API
             st.markdown("### Results")
