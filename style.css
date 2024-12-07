@@ -20,3 +20,17 @@ div.e1f1d6gn3 {
   text-align: center; /* Alinha o texto no centro horizontalmente */
   height: 100%; /* Garante que a altura se expanda para o tamanho total da coluna */
 }
+
+div.e1b2p2ww0 {
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+  text-align: center; /* Alinha o texto no centro horizontalmente */
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  padding: 5%; /* Ajuste geral de espaçamento */
+  border-radius: 5px;
+  border-left: 0.5rem solid #186d07 !important;
+  border-right: 0.5rem solid #186d07 !important;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+  height: 100%; /* Garante que a altura se expanda para o tamanho total da coluna */
+}
