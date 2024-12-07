@@ -7,6 +7,8 @@ class TesteModel:
         model = load_model_sb()
         assert model is not None, "Fail to test model, model = None❌"
         assert isinstance(model, Sequential), "Model is not an instance of Sequential❌"
+
+
         print('Modelo carregado com sucesso✅')
 
     @classmethod
